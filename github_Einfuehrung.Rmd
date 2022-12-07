@@ -1,0 +1,80 @@
+---
+title: "Einführung in github"
+author: "grb"
+date: "2022-12-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Einrichtung von Git
+Auch hier nachzulesen: 
+https://support.rstudio.com/hc/en-us/articles/200532077?version=2022.07.1%2B554&mode=desktop. Bei Fragen findet sich eine recht detaillierte Anleitung hier: https://happygitwithr.com/install-intro.html
+
+
+1) einen Account auf github anlegen: https://github.com/
+2) Git auf Rechner / R-Server installieren: https://git-scm.com/downloads 
+3) nachdem Git installiert in RStudio  Tools > Global Options > Git/SVN gehen, Häkchen auf *Enable version control interface for RStudio projects* setzen. Wenn Pfad fehlt, muss unter *Git executable* noch angegeben werden, wo die git.exe liegt (bei mir auf dem R-Server C:/Program Files/Git/bin/git.exe)
+4) nach RStudio Neustart sollte im oberen rechten Panel der Reiter Git hinzugekommen sein (wenn es hiermit Probleme gibt, nochmal den Pfad checken)
+
+Ab jetzt kann Git zur lokalen Versionskontrolle genutzt werden. Für ein Demo der oberen Schritte und lokaler Versionskontrolle siehe z.B. hier: https://www.youtube.com/watch?v=kL6L2MNqPHg ab 1:40 bis ca 8:00
+
+
+### Synchronisation mit github:
+bitte nicht wie im obigen Video (veraltet), sondern wie hier nachzulesen: https://happygitwithr.com/https-pat.html
+
+1) in RStudio package `usethis` herunterladen
+2) sich bei Git unter dem github Account vorstellen mit `usethis::use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")`
+3) mit dem Befehl `usethis::create_github_token()` ein github PAT (personal access token)  mit den entsprechenden vorausgewählten Berechtigungen erstellen
+4) Token kopieren oder Browser-Fenster geöffnet lassen
+5) Credentials mit dem Befehl `gitcreds::gitcreds_set()` hinterlegen
+
+
+### Ausprobieren
+einem neu angelegt Test-Projekt
+
+1) ein Projekt in RStudio anlegen: Create a Project > New Directory > New Project > Namen eingeben & Häkchen bei *Create a git repository* setzen
+2) checken, ob im oberen rechten Panel der Reiter Git zu sehen ist (wenn nicht ggf. nochmal checken ob unter Tools > Project Options unter Version control system Git eingestellt ist)
+3) Testskript im Projekt erstellen & abspeichern
+4) Git Reiter anklicken > Skript *stagen*, d.h. mit Häkchen auswählen > commit drücken
+5) Neues Fenster geht auf > Bezeichnung für den commit eingeben > commit 
+6) mit dem Befehl `usethis::use_github()` wird eine Repository auf github erstellt & das was vorher committed wurde in die repository gepusht (es sollte sich ein Browserfenster mit der repository öffnen)
+
+
+**Der Workflow ist dann so:**
+
+1) Änderungen im Skript werden *gestaged* (ausgewählt) > Commit
+2) Extrafenster mit vorgenommen Änderungen öffnet sich, dem Commit wird ein Name vergeben > Commit > Im Git Panel steht *Your branch is ahead of origin/master by 1 commit* 
+3) Commit mit grünem Pfeil *pushen 
+4) Änderung wird in der repository auf github wirksam
+5) Wenn Änderungen in der repository erfolgt sind (z.B. weil eine andere Person das Skript bearbeitet hat), Änderungen *pullen* mit blauen Pfeil nach unten 
+
+<br><br>
+
+### Sonstiges
+
+##### Verbindung von bereits bestehendem R Project mit github
+siehe auch hier: https://www.youtube.com/watch?v=bUoN85QvC10
+
+1) Git als Versionskontrolle für das Projekt einstellen (Tools > Project Options oder Version Control > Git auswählen)
+2) initial commit von den hochzuladenden Skripten ausführen
+3) auf github eine neue repository anlegen
+4) Nach Anlegen der repository erscheint eine Quick setup-Seite > dort den Code unter der Überschrift *...or push an existing repository from the command line* kopieren und in das Terminal in RStudio einfügen (nicht Console! sondern Terminal, wenn kein Terminal zu sehen ein neues Terminal öffnen mit Tools > Terminal > New Terminal)
+5) fertig
+
+<br><br>
+**.gitignore -File**
+
+- = file, dass eine Liste von files enthält, die von Git ignoriert werden sollen (bei mir alle Daten, alle Office-Dokumente, alle html-Dateien etc., also eigentlich alles, was nicht Code oder einfache .txt-Datei ist)
+-  .gitignore wird automatisch angelegt, sobald Git Versionskontrolle für ein RStudio Project aktiviert wird
+- files, die schon getrackt werden, werden davon nicht beeinflusst
+- jede Zeile im file enthält eine zu ignorierende Datei oder Muster
+- Bearbeitung von .gitignore z.B. in Notepad++ möglich
+- mit Mustern wie bspw. `*.log` /  `*.xlsx`  können alle log- oder xlxs-Dateien vom Tracking ausgeschlossen werden. Muster weiter oben werden - falls ein Konflikt auftritt - von Mustern weiter unten überschrieben
+- siehe als Beispiel das .gitignore im R Project Gelbe Hefte (U4951) hier: "O:/U4951/Consulimus_Abschlussdatenlieferung/01_GelbeHefte"
+- sobald alle auf github unerwünschten Dateien / Muster im .gitignore file aufgelistet wurden, erscheinen sie nicht mehr im Staging-Bereich in RStudio und können daher nicht versehentlich hochgeladen werden
+
+
+
