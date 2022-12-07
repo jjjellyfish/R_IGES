@@ -76,5 +76,14 @@ siehe auch hier: https://www.youtube.com/watch?v=bUoN85QvC10
 - siehe als Beispiel das .gitignore im R Project Gelbe Hefte (U4951) hier: "O:/U4951/Consulimus_Abschlussdatenlieferung/01_GelbeHefte"
 - sobald alle auf github unerwünschten Dateien / Muster im .gitignore file aufgelistet wurden, erscheinen sie nicht mehr im Staging-Bereich in RStudio und können daher nicht versehentlich hochgeladen werden
 
+<br><br>
+
+##### Verbindung mit einer bereits bestehenden repository
+am besten direkt einmal anhand des besprochenen R-Projekts auf dem P-Laufwerk ausprobieren: 
+
+1) Create Project > Version Control > Git
+2) Repository URL eingeben: <https://github.com/jugerb/R_IGES> > Create project, fertig
+
+
 
 
