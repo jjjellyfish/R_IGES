@@ -2,39 +2,6 @@
 # alle Funktionen erfordern das Laden von tidyverse
 
 
-#### Test ---------------
-### Testdatensatz zum Testen der Funktionen 
-df <- data.frame(
-  age = c(23, 34, 27, 49, 53, 41, 29, 31, 44, 39),
-  gender = c("M", "F", "F", "M", "M", "F", "M", "F", "M", "F"),
-  education = c("High School", "Bachelors", "Masters", "PhD", "High School", "Bachelors", "Masters", "Bachelors", "PhD", "High School"),
-  salary = c(52000, 68000, 84000, 96000, 51000, 70000, 89000, 59000, 79000, 46000),
-  experience = c(1, 4, 2, 8, 10, 6, 3, 3, 7, 5),
-  stringsAsFactors = FALSE
-)
-
-df$gender2 <- ifelse(df$gender == 'M', 1, 0)
-
-
-### Regressionsmodelle zum Testen der Funktionen
-# Linear regression of salary on age
-linear_model <- lm(salary ~ age, data = df)
-#summary(linear_model)
-
-# Binomial regression of gender on education
-binomial_model <- glm(gender2 ~ education + experience, data = df, family = binomial)
-#summary(binomial_model)
-
-# Multilevel model of salary on age, with a random intercept for education
-multilevel_model <- lme4::lmer(salary ~ age + (1 | education), data = df)
-#summary(multilevel_model)
-
-# Multilevel binomial regression of gender on education, with a random intercept for age
-multilevel_binomial_model <- lme4::glmer(gender2 ~ age + scale(salary, scale=TRUE) + experience + (1 | education), data = df, family = binomial)
-#summary(multilevel_binomial_model)
-
-
-#### Funktionen ---------------
 ##### 1. Einfache Modelle -----
 
 ### Output einer linearen Regression 
@@ -54,8 +21,6 @@ reg_output <- function(model) {
   return(coeffs)
 }
 
-tmp <- reg_output(linear_model)
-
 
 ### Output einer logistischen Regression 
 # function takes binomial glm-model and returns a data frame with OR, SE, lower_CI, upper_CI & p
@@ -73,9 +38,6 @@ logreg_output <- function(model) {
     dplyr::select(Parameter, OR, lower_CI, upper_CI, p)
   return(coeffs)
 }
-
-tmp <- logreg_output(binomial_model)
-
 
 
 ##### 2. Mehrebenenmodelle ------
@@ -107,9 +69,6 @@ mlm_output <- function(model) {
   return(output)
 }
 
-tmp <- mlm_output(multilevel_model)
-
-
 
 ### Output eines logistischen Mehrebenenmodells
 # function takes binomial Multilevel Model (lmer or glmer-object) and returns a data frame 
@@ -136,6 +95,4 @@ mlm_logreg_output <- function(model) {
   output <- bind_rows(coeffs, re)
   return(output)
 }
-
-tmp <- mlm_logreg_output(multilevel_binomial_model)
 
