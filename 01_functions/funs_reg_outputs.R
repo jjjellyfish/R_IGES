@@ -5,7 +5,7 @@
 ##### 1. Einfache Modelle -----
 
 ### Output einer linearen Regression 
-# function takes linear model and returns a data frame with b, SE, lower_CI, upper_CI & p
+## function takes linear model and returns a data frame with b, SE, lower_CI, upper_CI & p
 reg_output <- function(model) {
   coeffs <- as.data.frame(coef(summary(model)))
   coeffs <- coeffs %>%
