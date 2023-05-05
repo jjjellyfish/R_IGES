@@ -53,15 +53,15 @@ cross_tbl_brackets = function(x, item, group){
 # Numerische
 describe_tbl_brackets = function(x, item, group){
   x %>% 
-    group_by(Species) %>% 
-    summarise("MW" = paste0(komma_char(mean(Sepal.Length)),
+    group_by({{group}}) %>% 
+    summarise("MW" = paste0(komma_char(mean({{item}})),
                             " (",
-                            komma_char(sd(Sepal.Length)),
+                            komma_char(sd({{item}})),
                             ")"),
-              "min" = min(Sepal.Length),
-              "max" = max(Sepal.Length)
+              "min" = min({{item}}),
+              "max" = max({{item}})
     ) %>% 
-    pivot_wider(names_from = Species, values_from = c("MW", "min", "max"))
+    pivot_wider(names_from = {{group}}, values_from = c("MW", "min", "max"))
     return()
 }
 
