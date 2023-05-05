@@ -4,7 +4,7 @@
 #### Utility ####
 # Umwandlung eines numerischen Werts in ein character mit Komma als Dezimalseperator
 komma_char = function(x, n.decimal = 2){ # x = vektor
-  return(format(round(x, n.decimal), n.small = 2, decimal.mark = 2))
+  return(format(round(x, n.decimal), n.small = n.decimal, decimal.mark = ","))
 }
 
 #### Kontinuierliche Werte ####
@@ -53,14 +53,18 @@ cross_tbl_brackets = function(x, item, group){
 # Numerische
 describe_tbl_brackets = function(x, item, group){
   x %>% 
-    group_by({{group}}) %>% 
-    summarise("MW" = paste0(komma_char(mean({{item}})),
-                                 " (",
-                                 komma_char(sd({{item}})),
-                                 ")")) %>% 
-    spread({{group}}, "MW") %>% 
+    group_by(Species) %>% 
+    summarise("MW" = paste0(komma_char(mean(Sepal.Length)),
+                            " (",
+                            komma_char(sd(Sepal.Length)),
+                            ")"),
+              "min" = min(Sepal.Length),
+              "max" = max(Sepal.Length)
+    ) %>% 
+    pivot_wider(names_from = Species, values_from = c("MW", "min", "max"))
     return()
 }
+
 
 # Zählt Item mit Mehrfachantworten aus. Input ist der Datenframe, und alle Antworten als Dummy-Variablen.
 # Gibt Prozente aus für alle Reihen mit mindestens einer Antwort (!is.na); Mit "n_only" = TRUE kann nur das entsprechende n ausgegeben werden
